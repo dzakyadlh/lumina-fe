@@ -3,6 +3,12 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      colors: {
+        subtitle: '#d1d5db',
+      },
+      borderColor: {
+        'default-border': '#404040',
+      },
       fontFamily: {
         'poppins-light': ['Poppins Light', 'sans-serif'],
         'poppins-regular': ['Poppins Regular', 'sans-serif'],

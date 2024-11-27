@@ -10,63 +10,74 @@ import 'aos/dist/aos.css';
 import {
   getLatestMovies,
   getPopularMovies,
+  getPopularSeries,
   getTrendingMovies,
 } from '../../api/movies';
+import { CircularProgress } from '@mui/material';
+import Footer from '../../components/footer';
 
 export default function HomePage() {
-  const [trendingPlay, setTrendingPlay] = useState([]);
-  const [popularPlay, setPopularPlay] = useState([]);
-  const [newPlay, setNewPlay] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState({
+    trending: [],
+    popular: [],
+    popularSeries: [],
+    latest: [],
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    trending: null,
+    popular: null,
+    popularSeries: null,
+    latest: null,
+  });
 
   useEffect(() => {
-    const fetchTrendingData = async () => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
       try {
-        const response = await getTrendingMovies();
-        console.log(response);
-        setTrendingPlay(response);
+        const [trending, popular, popularSeries, latest] = await Promise.all([
+          getTrendingMovies(),
+          getPopularMovies(),
+          getPopularSeries(),
+          getLatestMovies(),
+        ]);
+
+        setData({
+          trending,
+          popular,
+          popularSeries,
+          latest,
+        });
       } catch (error) {
-        setError(error);
+        // Handle errors for specific datasets
+        setErrors((prev) => ({
+          ...prev,
+          trending:
+            error.response?.status === 404 ? 'Trending not found' : null,
+          popular: error.response?.status === 404 ? 'Popular not found' : null,
+          popularSeries:
+            error.response?.status === 404 ? 'Popular series not found' : null,
+          latest: error.response?.status === 404 ? 'Latest not found' : null,
+        }));
+      } finally {
+        setIsLoading(false);
       }
     };
-    const fetchPopularData = async () => {
-      try {
-        const response = await getPopularMovies();
-        console.log(response);
-        setPopularPlay(response);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    const fetchLatestData = async () => {
-      try {
-        const response = await getLatestMovies();
-        console.log(response);
-        setNewPlay(response);
-      } catch (error) {
-        setError(error);
-      }
-    };
+
     AOS.init({
-      duration: 1000, // animation duration in ms
-      offset: 100, // offset from the viewport
+      duration: 1000,
+      offset: 100,
     });
-    AOS.refresh();
-    fetchTrendingData();
-    fetchPopularData();
-    fetchLatestData();
+
+    fetchAllData();
   }, []);
 
-  const items = [
-    '/images/poster1.jpg',
-    '/images/poster2.jpg',
-    '/images/poster3.jpg',
-    '/images/poster4.jpg',
-    '/images/poster5.jpg',
-  ];
-
-  const repeatedItems = [...items, ...items];
+  if (isLoading)
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <React.Fragment>
@@ -75,8 +86,9 @@ export default function HomePage() {
         <img
           src="/images/theglory.jpg"
           alt="banner poster"
-          className="absolute w-3/5 right-0 z-[-10] filter brightness-50"
+          className="absolute h-screen w-4/5 object-cover object-top top-0 right-0 z-[-10] filter brightness-50"
         />
+        <div className="absolute h-full w-full bg-gradient-to-r from-black via-transparent to-transparent top-0 left-0 z-[-5]"></div>
         <header className="h-[70vh] w-2/5 flex flex-col justify-center p-10 gap-5">
           <p className="text-4xl font-bold">The Glory</p>
           <p className="">
@@ -109,41 +121,52 @@ export default function HomePage() {
           </div>
         </header>
         <main className="homeMovies">
-          <section
-            data-aos="fade-up"
-            className="w-full flex flex-col px-20 gap-7 mb-10"
-          >
-            <h2 className="text-3xl font-bold">Popular on Lumina</h2>
-            <ul className="w-full flex gap-5">
-              {popularPlay.map((item, index) => {
-                return <MovieCard movie={item} />;
-              })}
-            </ul>
-          </section>
-          <section
-            data-aos="fade-up"
-            className="w-full flex flex-col px-20 gap-7 mb-10"
-          >
-            <h2 className="text-3xl font-bold">Basically Made For You</h2>
-            <ul className="w-full flex gap-5">
-              {trendingPlay.map((item, index) => {
-                return <MovieCard movie={item} />;
-              })}
-            </ul>
-          </section>
-          <section
-            data-aos="fade-up"
-            className="w-full flex flex-col px-20 gap-7 mb-10"
-          >
-            <h2 className="text-3xl font-bold">New Releases</h2>
-            <ul className="w-full flex gap-5">
-              {newPlay.map((item, index) => {
-                return <MovieCard movie={item} />;
-              })}
-            </ul>
-          </section>
+          <MovieSection
+            title="Popular Movies on Lumina"
+            movies={data.popular}
+            error={errors.popular}
+          />
+          <MovieSection
+            title="Popular Series on Lumina"
+            movies={data.popularSeries}
+            error={errors.popularSeries}
+          />
+          <MovieSection
+            title="Trending Now"
+            movies={data.trending}
+            error={errors.trending}
+          />
+          <MovieSection
+            title="New Releases"
+            movies={data.latest}
+            error={errors.latest}
+          />
         </main>
       </div>
+      <Footer />
     </React.Fragment>
+  );
+}
+
+function MovieSection({ title, movies, error }) {
+  if (error)
+    return (
+      <div>
+        Error loading {title}: {error}
+      </div>
+    );
+
+  return (
+    <section
+      className="w-full flex flex-col px-20 gap-7 mb-10"
+      data-aos="fade-up"
+    >
+      <h2 className="text-3xl font-bold">{title}</h2>
+      <ul className="w-full flex gap-5">
+        {movies.map((movie, index) => (
+          <MovieCard key={index} movie={movie} />
+        ))}
+      </ul>
+    </section>
   );
 }

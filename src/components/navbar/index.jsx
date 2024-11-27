@@ -60,7 +60,7 @@ export default function Navbar({ page = '' }) {
           >
             <Link
               className="font-semibold text-2xl py-2 hover:text-yellow-200 transition duration-300 mr-5"
-              to={'/home'}
+              to={'/'}
             >
               Lumina
             </Link>
@@ -105,8 +105,8 @@ export default function Navbar({ page = '' }) {
               transition: { duration: 0.3 },
             }}
           >
-            <Link className="" to={'/likedMovies'}>
-              Liked Movies
+            <Link className="" to={'/watchList'}>
+              Watchlist
             </Link>
           </motion.li>
         </ul>

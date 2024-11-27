@@ -4,12 +4,23 @@ import { Link } from 'react-router';
 export function MovieCard({ movie }) {
   return (
     <motion.button whileHover={{ scale: 1.1 }} className="w-1/6 rounded-lg">
-      <Link to={`/movies/${movie.id}`} />
-      <img
-        className="h-full rounded-lg object-cover"
-        alt="movie poster"
-        src={movie.imageUrl}
-      />
+      {movie.is_series === false ? (
+        <Link to={`/movies/${movie.movie_id}`}>
+          <img
+            className="h-full rounded-lg object-cover"
+            alt={`${movie.title} (${movie.releaseYear})`}
+            src={movie.imageUrl}
+          />
+        </Link>
+      ) : (
+        <Link to={`/tvShows/${movie.movie_id}`}>
+          <img
+            className="h-full rounded-lg object-cover"
+            alt={`${movie.title} (${movie.releaseYear})`}
+            src={movie.imageUrl}
+          />
+        </Link>
+      )}
     </motion.button>
   );
 }

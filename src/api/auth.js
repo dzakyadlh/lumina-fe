@@ -32,6 +32,8 @@ export async function refreshToken() {
   try {
     const token = localStorage.getItem('refresh_token');
     const response = await axiosInstance.post(`/users/token/refresh/`, token);
+    localStorage.setItem('access_token', response.data.access);
+    localStorage.setItem('refresh_token', response.data.refresh);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Refresh Token Failed';

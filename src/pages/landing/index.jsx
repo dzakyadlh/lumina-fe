@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './landing.css';
 import Navbar from '../../components/navbar';
 import {
@@ -10,15 +10,65 @@ import { motion } from 'motion/react';
 import Footer from '../../components/footer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { CircularProgress } from '@mui/material';
+import { getPopularMovies, getPopularSeries } from '../../api/movies';
 
 export default function LandingPage() {
+  const [data, setData] = useState({
+    trending: [],
+    popular: [],
+    popularSeries: [],
+    latest: [],
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    trending: null,
+    popular: null,
+    popularSeries: null,
+    latest: null,
+  });
+
   useEffect(() => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
+      try {
+        const [popular, popularSeries] = await Promise.all([
+          getPopularMovies(),
+          getPopularSeries(),
+        ]);
+
+        setData({
+          popular,
+          popularSeries,
+        });
+      } catch (error) {
+        // Handle errors for specific datasets
+        setErrors((prev) => ({
+          ...prev,
+          popular: error.response?.status === 404 ? 'Popular not found' : null,
+          popularSeries:
+            error.response?.status === 404 ? 'Popular series not found' : null,
+        }));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     AOS.init({
       duration: 1000, // animation duration in ms
       offset: 100, // offset from the viewport
     });
     AOS.refresh();
+
+    fetchAllData();
   }, []);
+
+  if (isLoading)
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
 
   const items = [
     '/images/poster1.jpg',
@@ -28,6 +78,7 @@ export default function LandingPage() {
     '/images/poster5.jpg',
   ];
   const repeatedItems = [...items, ...items];
+
   return (
     <React.Fragment>
       <Navbar page="landing" />
@@ -99,8 +150,8 @@ export default function LandingPage() {
       >
         <h2 className="text-3xl font-bold">Trending Now</h2>
         <ul className="w-full flex gap-5">
-          {repeatedItems.map((item, index) => {
-            return <MovieCard />;
+          {data.popular.map((item, index) => {
+            return <MovieCard movie={item} />;
           })}
         </ul>
       </section>
@@ -110,8 +161,8 @@ export default function LandingPage() {
       >
         <h2 className="text-3xl font-bold">This Week's Free to Watch</h2>
         <ul className="w-full flex gap-5">
-          {repeatedItems.map((item, index) => {
-            return <MovieCard />;
+          {data.popularSeries.map((item, index) => {
+            return <MovieCard movie={item} />;
           })}
         </ul>
       </section>
@@ -157,35 +208,35 @@ export default function LandingPage() {
         <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
           <div class="flex flex-col items-center justify-center">
             <dt class="mb-2 text-3xl font-extrabold">10M+</dt>
-            <dd class="text-gray-500 dark:text-gray-400">
+            <dd class="text-gray-500 dark:text-subtitle">
               Monthly Active Users
             </dd>
           </div>
           <div class="flex flex-col items-center justify-center">
             <dt class="mb-2 text-3xl font-extrabold">100K+</dt>
-            <dd class="text-gray-500 dark:text-gray-400">
+            <dd class="text-gray-500 dark:text-subtitle">
               Movies and TV Shows
             </dd>
           </div>
           <div class="flex flex-col items-center justify-center">
             <dt class="mb-2 text-3xl font-extrabold">50+</dt>
-            <dd class="text-gray-500 dark:text-gray-400">
+            <dd class="text-gray-500 dark:text-subtitle">
               Countries Supported
             </dd>
           </div>
           <div class="flex flex-col items-center justify-center">
             <dt class="mb-2 text-3xl font-extrabold">10+</dt>
-            <dd class="text-gray-500 dark:text-gray-400">
+            <dd class="text-gray-500 dark:text-subtitle">
               Subtitles Supported
             </dd>
           </div>
           <div class="flex flex-col items-center justify-center">
             <dt class="mb-2 text-3xl font-extrabold">4.8+</dt>
-            <dd class="text-gray-500 dark:text-gray-400">Average Rating</dd>
+            <dd class="text-gray-500 dark:text-subtitle">Average Rating</dd>
           </div>
           <div class="flex flex-col items-center justify-center">
             <dt class="mb-2 text-3xl font-extrabold">24/7</dt>
-            <dd class="text-gray-500 dark:text-gray-400">Customer Support</dd>
+            <dd class="text-gray-500 dark:text-subtitle">Customer Support</dd>
           </div>
         </dl>
       </section>

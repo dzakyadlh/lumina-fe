@@ -19,7 +19,7 @@ export default function SignInPage() {
     try {
       const result = await signIn(formData);
       if (result) {
-        navigate('/home');
+        navigate('/');
       }
     } catch (error) {
       setError(`${error}`);
