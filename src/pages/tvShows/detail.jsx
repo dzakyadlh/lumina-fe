@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { MovieCard } from '../../components/movie_card';
 import { addWatchlist } from '../../api/users';
+import { secondsToRuntime } from '../../utils/runtimeConverter';
 
 export default function TVShowDetailPage() {
   const { tvShow_id } = useParams();
@@ -77,7 +78,7 @@ export default function TVShowDetailPage() {
             id="toast"
             className="fixed bottom-5 right-5 border-yellow-400 border rounded-lg p-4 bg-white dark:bg-black"
           >
-            {tvShow.title} added to your watch list!
+            {tvShow.title} added to your watchlist!
           </div>
         )}
         <header
@@ -87,7 +88,7 @@ export default function TVShowDetailPage() {
           <h1 className="text-4xl font-bold">{tvShow.title}</h1>
           <p className="">{tvShow.plot}</p>
           <p className="text-subtitle">
-            {tvShow.releaseYear} | {tvShow.runtime} |{' '}
+            {tvShow.releaseYear} | {secondsToRuntime(tvShow.runtime)} |{' '}
             {tvShow.genres.map((genre) => genre.text).join(', ')}
           </p>
           <p className="">

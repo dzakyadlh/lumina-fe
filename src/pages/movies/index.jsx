@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/navbar';
-import { MovieCard } from '../../components/movie_card';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { getMoviesByGenre } from '../../api/movies';
 import { CircularProgress } from '@mui/material';
+import { MovieList } from '../../components/movie_list';
 
 const GENRES = [
   'Action',
@@ -80,7 +80,7 @@ export default function MoviesPage() {
         </header>
         <main className="homeMovies">
           {GENRES.map((genre) => (
-            <MovieSection
+            <MovieList
               key={genre}
               title={genre.charAt(0).toUpperCase() + genre.slice(1)}
               movies={data[genre] || []}
@@ -90,29 +90,5 @@ export default function MoviesPage() {
         </main>
       </div>
     </React.Fragment>
-  );
-}
-
-function MovieSection({ title, movies, error }) {
-  if (error)
-    return (
-      <div className="w-full flex flex-col px-20 mb-10">
-        <h2 className="text-3xl font-bold">{title}</h2>
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-
-  return (
-    <section
-      className="w-full flex flex-col px-20 gap-7 mb-10"
-      data-aos="fade-up"
-    >
-      <h2 className="text-3xl font-bold">{title}</h2>
-      <ul className="w-full flex gap-5">
-        {movies.map((movie, index) => (
-          <MovieCard key={index} movie={movie} />
-        ))}
-      </ul>
-    </section>
   );
 }

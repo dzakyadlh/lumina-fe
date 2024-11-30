@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
-  timeout: 5000,
-});
+import axiosInstance from './axiosInstance';
 
 export async function signIn(user) {
   try {
@@ -24,7 +19,24 @@ export async function signUp(user) {
     const response = await axiosInstance.post(`/users/signup/`, user);
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.response?.data?.message || 'Sign Up Failed';
+  }
+}
+
+export async function signOut() {
+  try {
+    const token = localStorage.removeItem('refresh_token');
+    const response = await axiosInstance.post(`/users/signout/`, token);
+    if (response) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response?.data?.message || 'Sign Out Failed';
   }
 }
 
@@ -36,6 +48,19 @@ export async function refreshToken() {
     localStorage.setItem('refresh_token', response.data.refresh);
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.response?.data?.message || 'Refresh Token Failed';
+  }
+}
+
+export async function authenticateUser() {
+  try {
+    const token = localStorage.getItem('refresh_token');
+    if (token) {
+      await refreshToken();
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response?.data?.message || 'Authentication Failed';
   }
 }

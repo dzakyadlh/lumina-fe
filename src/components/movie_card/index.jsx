@@ -3,7 +3,10 @@ import { Link } from 'react-router';
 
 export function MovieCard({ movie }) {
   return (
-    <motion.button whileHover={{ scale: 1.1 }} className="w-1/6 rounded-lg">
+    <motion.button
+      whileHover={{ scale: 1.1 }}
+      className="w-[25vw] md:w-[12.5%] rounded-lg"
+    >
       {movie.is_series === false ? (
         <Link to={`/movies/${movie.movie_id}`}>
           <img

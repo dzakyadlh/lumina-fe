@@ -3,7 +3,6 @@ import Navbar from '../../components/navbar';
 import { motion } from 'motion/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { MovieCard } from '../../components/movie_card';
 import './home.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -15,6 +14,7 @@ import {
 } from '../../api/movies';
 import { CircularProgress } from '@mui/material';
 import Footer from '../../components/footer';
+import { MovieList } from '../../components/movie_list';
 
 export default function HomePage() {
   const [data, setData] = useState({
@@ -29,6 +29,12 @@ export default function HomePage() {
     popular: null,
     popularSeries: null,
     latest: null,
+  });
+  const [page, setPage] = useState({
+    trending: 1,
+    popular: 1,
+    popularSeries: 1,
+    latest: 1,
   });
 
   useEffect(() => {
@@ -86,10 +92,10 @@ export default function HomePage() {
         <img
           src="/images/theglory.jpg"
           alt="banner poster"
-          className="absolute h-screen w-4/5 object-cover object-top top-0 right-0 z-[-10] filter brightness-50"
+          className="absolute h-screen w-full md:w-4/5 object-cover object-top top-0 right-0 z-[-10] filter brightness-50"
         />
         <div className="absolute h-full w-full bg-gradient-to-r from-black via-transparent to-transparent top-0 left-0 z-[-5]"></div>
-        <header className="h-[70vh] w-2/5 flex flex-col justify-center p-10 gap-5">
+        <header className="h-screen md:h-[70vh] w-full md:w-2/5 flex flex-col justify-center p-10 gap-5">
           <p className="text-4xl font-bold">The Glory</p>
           <p className="">
             A young woman, bullied to the point of deciding to drop out of
@@ -121,22 +127,22 @@ export default function HomePage() {
           </div>
         </header>
         <main className="homeMovies">
-          <MovieSection
+          <MovieList
             title="Popular Movies on Lumina"
             movies={data.popular}
             error={errors.popular}
           />
-          <MovieSection
+          <MovieList
             title="Popular Series on Lumina"
             movies={data.popularSeries}
             error={errors.popularSeries}
           />
-          <MovieSection
+          <MovieList
             title="Trending Now"
             movies={data.trending}
             error={errors.trending}
           />
-          <MovieSection
+          <MovieList
             title="New Releases"
             movies={data.latest}
             error={errors.latest}
@@ -145,28 +151,5 @@ export default function HomePage() {
       </div>
       <Footer />
     </React.Fragment>
-  );
-}
-
-function MovieSection({ title, movies, error }) {
-  if (error)
-    return (
-      <div>
-        Error loading {title}: {error}
-      </div>
-    );
-
-  return (
-    <section
-      className="w-full flex flex-col px-20 gap-7 mb-10"
-      data-aos="fade-up"
-    >
-      <h2 className="text-3xl font-bold">{title}</h2>
-      <ul className="w-full flex gap-5">
-        {movies.map((movie, index) => (
-          <MovieCard key={index} movie={movie} />
-        ))}
-      </ul>
-    </section>
   );
 }

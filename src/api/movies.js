@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
-  timeout: 5000,
-});
+import axiosInstance from './axiosInstance';
 
 export async function getTrendingMovies() {
   try {
@@ -25,7 +20,9 @@ export async function getPopularMovies() {
 
 export async function getPopularSeries() {
   try {
-    const response = await axiosInstance.get(`/movies/?param=popularSeries`);
+    const response = await axiosInstance.get(
+      `/movies/?param=popularSeries&title_type=tvSeries`
+    );
     return response.data.data;
   } catch (error) {
     throw error.response?.data?.message || 'Fetch Movies Failed';
@@ -69,5 +66,39 @@ export async function getDetailsById(id) {
   } catch (error) {
     console.log(error);
     throw error.response?.data?.message || 'Fetch Movie Detail Failed';
+  }
+}
+
+export async function getRandomTvShows(page) {
+  try {
+    const response = await axiosInstance.get(
+      `/movies/?randomized=True&title_type=tvSeries&page=${page}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response?.data?.message || 'Fetch Movies Failed';
+  }
+}
+
+export async function getRandomMovies(page) {
+  try {
+    const response = await axiosInstance.get(
+      `/movies/?randomized=True&title_type=movie&page=${page}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response?.data?.message || 'Fetch Movies Failed';
+  }
+}
+
+export async function searchMoviesByTitle(title) {
+  try {
+    const response = await axiosInstance.get(`/movies/?title=${title}`);
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response?.data?.message || 'Search movies failed';
   }
 }

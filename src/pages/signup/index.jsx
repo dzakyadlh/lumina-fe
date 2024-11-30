@@ -6,7 +6,7 @@ import { signUp } from '../../api/auth';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     username: '',
     email: '',
     password: '',
@@ -15,8 +15,8 @@ export default function SignUpPage() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { key, value } = e.target;
-    setFormData({ ...formData, [key]: value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -82,7 +82,6 @@ export default function SignUpPage() {
             type="submit"
             whileHover={{ scale: 1.05, backgroundColor: '#fde047' }}
             className="px-10 py-3 bg-yellow-200 rounded-full text-black font-semibold"
-            onClick={() => {}}
           >
             Sign Up
           </motion.button>

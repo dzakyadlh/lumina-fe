@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { MovieCard } from '../../components/movie_card';
 import { addWatchlist } from '../../api/users';
+import { secondsToRuntime } from '../../utils/runtimeConverter';
 
 export default function MovieDetailPage() {
   const { movie_id } = useParams();
@@ -25,6 +26,7 @@ export default function MovieDetailPage() {
       try {
         const data = await getDetailsById(movie_id);
         setMovie(data);
+        console.log(data);
         const reData = await getTvShowsByGenre(data.genres[0].text);
         setRecommendations(reData);
       } catch (error) {
@@ -45,6 +47,10 @@ export default function MovieDetailPage() {
   const handleAddWatchlist = async () => {
     try {
       const data = await addWatchlist(movie_id);
+      if (data) {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      }
     } catch (error) {
       setError(error);
     }
@@ -72,7 +78,7 @@ export default function MovieDetailPage() {
             id="toast"
             className="fixed bottom-5 right-5 border-yellow-400 border rounded-lg p-4 bg-white dark:bg-black"
           >
-            {movie.title} added to your watch list!
+            {movie.title} added to your watchlist!
           </div>
         )}
         <header
@@ -82,7 +88,7 @@ export default function MovieDetailPage() {
           <h1 className="text-4xl font-bold">{movie.title}</h1>
           <p className="">{movie.plot}</p>
           <p className="text-subtitle">
-            {movie.releaseYear} | {movie.runtime} |{' '}
+            {movie.releaseYear} | {secondsToRuntime(movie.runtime)} |{' '}
             {movie.genres.map((genre) => genre.text).join(', ')}
           </p>
           <p className="">
