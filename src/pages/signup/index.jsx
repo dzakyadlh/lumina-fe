@@ -35,7 +35,7 @@ export default function SignUpPage() {
 
   return (
     <React.Fragment>
-      <div className="h-screen flex flex-col items-center justify-center">
+      <div className="min-h-screen flex flex-col items-center justify-center py-10 px-2">
         <img
           src="/images/poster4.jpg"
           alt="Background Poster"
@@ -43,7 +43,7 @@ export default function SignUpPage() {
         />
         <form
           onSubmit={handleSubmit}
-          className="w-full sm:w-1/4 bg-black rounded-lg border border-yellow-400 flex flex-col justify-center p-10 gap-5"
+          className="w-full sm:w-2/3 md:w-1/2 xl:w-1/3 2xl:w-1/4 bg-black rounded-lg border border-yellow-400 flex flex-col justify-center px-5 md:px-10 py-10 gap-5"
         >
           <h1 className="text-3xl font-bold">Sign Up</h1>
           <CustomInputField

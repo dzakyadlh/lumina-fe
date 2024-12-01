@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
+import Footer from '../../components/footer';
+import { ErrorAlert } from '../../components/alerts';
 
 export default function WatchlistPage() {
   const [watchlist, setWatchlist] = useState([]);
@@ -67,24 +69,24 @@ export default function WatchlistPage() {
   return (
     <React.Fragment>
       <Navbar />
-      <div className="min-h-screen w-full flex flex-col py-28 px-20">
-        <header className="mb-10">
-          <h1 className="text-4xl font-bold">Your Watch List</h1>
+      <div className="min-h-screen w-full flex flex-col pt-24 pb-5 md:py-28 px-5 md:px-10 xl:px-20">
+        <header className="mb-5 md:mb-10">
+          <h1 className="text-2xl md:text-4xl font-bold">Your Watchlist</h1>
         </header>
         <main>
           <section className="flex gap-5">
             {watchlist.length === 0 ? (
-              <p className="text-xl">
+              <p className="sm:text-xl">
                 You don't have any watch list. Go and add some movies into your
                 watch list!
               </p>
             ) : (
-              <ul className="w-full flex gap-5">
+              <ul className="w-full flex flex-wrap gap-5">
                 {watchlist.map((item, index) => (
                   <motion.div
                     key={index}
                     whileHover={{ scale: 1.1 }}
-                    className="w-[12.5%] relative group"
+                    className="flex-shrink-0 w-[25vw] sm:w-[15vw] xl:w-[12.5%] rounded-lg relative group"
                   >
                     <motion.button className="w-full h-full rounded-lg">
                       {item.is_series === false ? (
@@ -107,7 +109,7 @@ export default function WatchlistPage() {
                     </motion.button>
                     <button
                       onClick={() => handleRemoveWatchlist(item.movie_id)}
-                      className="absolute top-2 right-2 text-white hidden group-hover:block"
+                      className="absolute top-2 right-2 text-yellow-500 hidden group-hover:block"
                       title="Remove from Watchlist"
                     >
                       <FontAwesomeIcon icon={faClose} className="text-xl" />
@@ -119,6 +121,8 @@ export default function WatchlistPage() {
           </section>
         </main>
       </div>
+      {error && <ErrorAlert alertText={error} />}
+      <Footer />
     </React.Fragment>
   );
 }

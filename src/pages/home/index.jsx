@@ -15,6 +15,10 @@ import {
 import { CircularProgress } from '@mui/material';
 import Footer from '../../components/footer';
 import { MovieList } from '../../components/movie_list';
+import {
+  CustomFilledButton,
+  CustomSecondaryButton,
+} from '../../components/custom_buttons';
 
 export default function HomePage() {
   const [data, setData] = useState({
@@ -29,12 +33,6 @@ export default function HomePage() {
     popular: null,
     popularSeries: null,
     latest: null,
-  });
-  const [page, setPage] = useState({
-    trending: 1,
-    popular: 1,
-    popularSeries: 1,
-    latest: 1,
   });
 
   useEffect(() => {
@@ -89,43 +87,32 @@ export default function HomePage() {
     <React.Fragment>
       <Navbar />
       <div className="min-h-screen w-full flex flex-col">
-        <img
-          src="/images/theglory.jpg"
-          alt="banner poster"
-          className="absolute h-screen w-full md:w-4/5 object-cover object-top top-0 right-0 z-[-10] filter brightness-50"
-        />
-        <div className="absolute h-full w-full bg-gradient-to-r from-black via-transparent to-transparent top-0 left-0 z-[-5]"></div>
-        <header className="h-screen md:h-[70vh] w-full md:w-2/5 flex flex-col justify-center p-10 gap-5">
-          <p className="text-4xl font-bold">The Glory</p>
-          <p className="">
-            A young woman, bullied to the point of deciding to drop out of
-            school, plans the best way to get revenge. After becoming a primary
-            school teacher, she takes in the son of the man who tormented her
-            the most to enact her vengeance.
-          </p>
-          <div className="flex items-center gap-5">
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#fde68a' }}
-              className="w-fit px-10 py-3 bg-black dark:bg-white border-neutral-600 border rounded-full text-white dark:text-black font-semibold"
-              onClick={() => {}}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <FontAwesomeIcon icon={faPlay} className="w-5 h-5 text-black" />
-                Play
+        {data.trending.length > 0 && (
+          <>
+            <img
+              src={data.trending[0].imageUrl}
+              alt={`${data.trending[0].title} (${data.trending[0].releaseYear})`}
+              className="absolute h-screen w-full object-cover object-top top-0 right-0 z-[-10] filter brightness-50"
+            />
+            <div className="absolute h-full w-full bg-gradient-to-r from-black via-transparent to-transparent top-0 left-0 z-[-5]"></div>
+            <header className="h-screen md:h-[70vh] w-full md:w-3/5 lg:w-2/5 flex flex-col justify-center p-10 xl:px-20 gap-5">
+              <p className="text-4xl font-bold">{data.trending[0].title}</p>
+              <p className="line-clamp-6">{data.trending[0].plot}</p>
+              <div className="flex items-center gap-5">
+                <CustomFilledButton
+                  btnText="Play"
+                  onClick={() => {}}
+                  icon={faPlay}
+                />
+                <CustomSecondaryButton
+                  btnText="Watch Later"
+                  onClick={() => {}}
+                  icon={faAdd}
+                />
               </div>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="w-fit px-10 py-3 bg-neutral-500 border-neutral-600 border rounded-full text-white font-semibold"
-              onClick={() => {}}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <FontAwesomeIcon icon={faAdd} className="w-5 h-5 text-white" />
-                Watch Later
-              </div>
-            </motion.button>
-          </div>
-        </header>
+            </header>
+          </>
+        )}
         <main className="homeMovies">
           <MovieList
             title="Popular Movies on Lumina"

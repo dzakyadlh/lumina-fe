@@ -73,8 +73,8 @@ export default function MoviesPage() {
     <React.Fragment>
       <Navbar />
       <div className="min-h-screen w-full flex flex-col">
-        <header className="mx-20 pb-5 mt-28 mb-10 border-b border-neutral-700">
-          <p className="text-4xl font-bold text-yellow-200">
+        <header className="mx-5 sm:mx-20 pb-5 mt-28 mb-10 border-b border-neutral-700">
+          <p className="text-3xl md:text-4xl font-bold text-yellow-200">
             Movies Available in Lumina
           </p>
         </header>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './landing.css';
 import Navbar from '../../components/navbar';
 import {
   MovieCard,
@@ -11,43 +10,45 @@ import Footer from '../../components/footer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { CircularProgress } from '@mui/material';
-import { getPopularMovies, getPopularSeries } from '../../api/movies';
+import {
+  getPopularMovies,
+  getPopularSeries,
+  getRandomTvShows,
+} from '../../api/movies';
+import { CustomFilledButton } from '../../components/custom_buttons';
+import { MovieList } from '../../components/movie_list';
 
 export default function LandingPage() {
   const [data, setData] = useState({
-    trending: [],
     popular: [],
-    popularSeries: [],
-    latest: [],
+    freeToWatch: [],
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
-    trending: null,
     popular: null,
-    popularSeries: null,
-    latest: null,
+    freeToWatch: null,
   });
 
   useEffect(() => {
     const fetchAllData = async () => {
       setIsLoading(true);
       try {
-        const [popular, popularSeries] = await Promise.all([
+        const [popular, freeToWatch] = await Promise.all([
           getPopularMovies(),
-          getPopularSeries(),
+          getRandomTvShows(1),
         ]);
 
         setData({
           popular,
-          popularSeries,
+          freeToWatch,
         });
       } catch (error) {
         // Handle errors for specific datasets
         setErrors((prev) => ({
           ...prev,
           popular: error.response?.status === 404 ? 'Popular not found' : null,
-          popularSeries:
-            error.response?.status === 404 ? 'Popular series not found' : null,
+          freeToWatch:
+            error.response?.status === 404 ? 'Free to watch not found' : null,
         }));
       } finally {
         setIsLoading(false);
@@ -87,7 +88,7 @@ export default function LandingPage() {
         className="relative min-h-screen w-full flex flex-col items-center justify-center mb-10"
       >
         <div className="absolute top-0 left-0 flex h-screen w-full overflow-x-hidden z-[-10] overflow-hidden">
-          <div className="flex w-[200%] animate-marquee whitespace-nowrap">
+          <div className="flex animate-marquee whitespace-nowrap">
             {repeatedItems.map((item, index) => {
               return (
                 <img
@@ -100,7 +101,7 @@ export default function LandingPage() {
             })}
           </div>
 
-          <div className="flex w-[200%] absolute top-0 animate-marquee2 whitespace-nowrap">
+          <div className="flex absolute top-0 animate-marquee2 whitespace-nowrap">
             {repeatedItems.map((item, index) => {
               return (
                 <img
@@ -113,65 +114,51 @@ export default function LandingPage() {
             })}
           </div>
         </div>
-        <h1 className="font-bold text-5xl text-center sm:w-1/2 leading-relaxed mb-5 text-yellow-200">
+        <h1 className="font-bold text-4xl sm:text-5xl text-center px-5 lg:w-1/2 leading-snug sm:leading-relaxed mb-5 text-yellow-200">
           Lighten up your world with unlimited movies, TV shows, and more
         </h1>
-        <p className="text-xl text-center sm:w-1/2">
+        <p className="sm:text-xl text-center sm:w-1/2">
           Starts free with our weekly free to watch rotations!
         </p>
       </header>
       <section
         data-aos="fade-up"
-        className="w-full flex flex-col items-center justify-center box-border p-10 gap-5"
+        className="w-full flex flex-col items-center justify-center box-border p-5 md:p-10 gap-5"
       >
         <p>
           Feeling the light already? Enter your email to create an account and
           start watching.
         </p>
-        <form className="flex w-1/3 gap-5">
+        <form className="flex max-sm:flex-col max-sm:items-end justify-center w-full lg:w-2/3 gap-5">
           <input
             type="email"
-            class="w-2/3 bg-white border border-gray-300 text-gray-900 rounded-full block p-4 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark"
+            class="w-full md:w-2/3 bg-white border border-gray-300 text-gray-900 rounded-full block p-4 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark"
             placeholder="Email Address"
             required
           />
-          <motion.button
-            whileHover={{ scale: 1.1, backgroundColor: '#fde047' }}
-            className="px-5 py-3 bg-yellow-200 rounded-full text-black font-semibold"
-            onClick={() => {}}
-          >
-            Watch Now!
-          </motion.button>
+          <CustomFilledButton btnText="Watch Now!" onClick={() => {}} />
         </form>
       </section>
+      <MovieList
+        data-aos="fade-up"
+        title="Popular Now"
+        movies={data.popular}
+        error={errors.popular}
+      />
+      <MovieList
+        data-aos="fade-up"
+        title="This Week's Free to Watch"
+        movies={data.freeToWatch}
+        error={errors.freeToWatch}
+      />
       <section
         data-aos="fade-up"
-        className="w-full flex flex-col px-20 p-10 gap-7"
+        className="w-full flex flex-col px-5 md:px-20 py-10 gap-7"
       >
-        <h2 className="text-3xl font-bold">Trending Now</h2>
-        <ul className="w-full flex gap-5">
-          {data.popular.map((item, index) => {
-            return <MovieCard movie={item} />;
-          })}
-        </ul>
-      </section>
-      <section
-        data-aos="fade-up"
-        className="w-full flex flex-col px-20 p-10 gap-7"
-      >
-        <h2 className="text-3xl font-bold">This Week's Free to Watch</h2>
-        <ul className="w-full flex gap-5">
-          {data.popularSeries.map((item, index) => {
-            return <MovieCard movie={item} />;
-          })}
-        </ul>
-      </section>
-      <section
-        data-aos="fade-up"
-        className="w-full flex flex-col px-20 p-10 gap-7"
-      >
-        <h2 className="text-3xl font-bold">More Reasons to Join Lumina</h2>
-        <ul className="w-full flex gap-5">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          More Reasons to Join Lumina
+        </h2>
+        <ul className="w-full flex justify-center gap-5 max-md:flex-wrap">
           <FeatureCard titleText="Movies tailored to your taste" bodyText="" />
           <FeatureCard titleText="Cancel or switch plan anytime" />
           <FeatureCard titleText="Watch in any devices, anywhere, anytime" />
@@ -180,10 +167,12 @@ export default function LandingPage() {
       </section>
       <section
         data-aos="fade-up"
-        className="w-full flex flex-col px-20 p-10 gap-7"
+        className="w-full flex flex-col px-5 md:px-20 py-10 gap-7"
       >
-        <h2 className="text-3xl font-bold">What they say about Lumina</h2>
-        <ul className="w-full flex gap-10">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          What they say about Lumina
+        </h2>
+        <ul className="w-full flex max-lg:flex-col gap-10">
           <ReviewCard
             profilePicture="/images/review1.jpg"
             name="Mizuki Rei"
@@ -203,48 +192,52 @@ export default function LandingPage() {
       </section>
       <section
         data-aos="fade-up"
-        className="w-full flex flex-col px-20 p-10 gap-7"
+        className="w-full flex flex-col px-5 md:px-20 py-10 gap-7"
       >
-        <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
-          <div class="flex flex-col items-center justify-center">
-            <dt class="mb-2 text-3xl font-extrabold">10M+</dt>
-            <dd class="text-gray-500 dark:text-subtitle">
+        <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl font-extrabold">10M+</dt>
+            <dd className="text-gray-500 dark:text-subtitle text-center">
               Monthly Active Users
             </dd>
           </div>
-          <div class="flex flex-col items-center justify-center">
-            <dt class="mb-2 text-3xl font-extrabold">100K+</dt>
-            <dd class="text-gray-500 dark:text-subtitle">
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl font-extrabold">100K+</dt>
+            <dd className="text-gray-500 dark:text-subtitle text-center">
               Movies and TV Shows
             </dd>
           </div>
-          <div class="flex flex-col items-center justify-center">
-            <dt class="mb-2 text-3xl font-extrabold">50+</dt>
-            <dd class="text-gray-500 dark:text-subtitle">
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl font-extrabold">50+</dt>
+            <dd className="text-gray-500 dark:text-subtitle text-center">
               Countries Supported
             </dd>
           </div>
-          <div class="flex flex-col items-center justify-center">
-            <dt class="mb-2 text-3xl font-extrabold">10+</dt>
-            <dd class="text-gray-500 dark:text-subtitle">
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl font-extrabold">10+</dt>
+            <dd className="text-gray-500 dark:text-subtitle text-center">
               Subtitles Supported
             </dd>
           </div>
-          <div class="flex flex-col items-center justify-center">
-            <dt class="mb-2 text-3xl font-extrabold">4.8+</dt>
-            <dd class="text-gray-500 dark:text-subtitle">Average Rating</dd>
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl font-extrabold">4.8+</dt>
+            <dd className="text-gray-500 dark:text-subtitle text-center">
+              Average Rating
+            </dd>
           </div>
-          <div class="flex flex-col items-center justify-center">
-            <dt class="mb-2 text-3xl font-extrabold">24/7</dt>
-            <dd class="text-gray-500 dark:text-subtitle">Customer Support</dd>
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl font-extrabold">24/7</dt>
+            <dd className="text-gray-500 dark:text-subtitle text-center">
+              Customer Support
+            </dd>
           </div>
         </dl>
       </section>
       <section
         data-aos="fade-up"
-        className="w-full flex flex-col items-center px-20 p-10 gap-7"
+        className="w-full flex flex-col items-center px-5 md:px-20 py-10 gap-7"
       >
-        <p className="">
+        <p className="text-center">
           So, what are you waiting for? Go on and try it yourself!
         </p>
         <motion.button

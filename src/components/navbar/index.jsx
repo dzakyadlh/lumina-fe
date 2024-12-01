@@ -165,6 +165,7 @@ export default function Navbar({ page = '' }) {
               initial={{ opacity: 0, x: 110 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 110 }}
+              className="fixed top-5 right-36"
             >
               <input
                 type="text"
@@ -232,6 +233,28 @@ export default function Navbar({ page = '' }) {
         </button>
         {showMobileMenu && (
           <div className="absolute top-16 left-0 w-full bg-black text-white flex flex-col items-start gap-5 px-10 py-5 lg:hidden">
+            <motion.form
+              onSubmit={handleSearchSubmit}
+              initial={{ opacity: 0, x: 110 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 110 }}
+              className="flex items-center gap-5 mb-5"
+            >
+              <input
+                type="text"
+                name="search"
+                className="border border-black dark:border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 w-64 bg-black text-sm"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              <button type="submit" onClick={handleSearchSubmit}>
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="text-lg dark:text-white hover:text-yellow-200"
+                />
+              </button>
+            </motion.form>
             <Link to="/tvShows" className="hover:text-yellow-200">
               TV Shows
             </Link>
@@ -241,7 +264,7 @@ export default function Navbar({ page = '' }) {
             <Link to="/freeToWatch" className="hover:text-yellow-200">
               Free to Watch
             </Link>
-            <Link to="/watchList" className="hover:text-yellow-200">
+            <Link to="/watchlist" className="hover:text-yellow-200">
               Watchlist
             </Link>
             <Link to="/profile" className="hover:text-yellow-200">

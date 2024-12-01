@@ -12,6 +12,11 @@ import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { MovieCard } from '../../components/movie_card';
 import { addWatchlist } from '../../api/users';
 import { secondsToRuntime } from '../../utils/runtimeConverter';
+import { MovieList } from '../../components/movie_list';
+import {
+  CustomFilledButton,
+  CustomSecondaryButton,
+} from '../../components/custom_buttons';
 
 export default function TVShowDetailPage() {
   const { tvShow_id } = useParams();
@@ -83,10 +88,10 @@ export default function TVShowDetailPage() {
         )}
         <header
           data-aos="fade-right"
-          className="h-screen w-2/5 flex flex-col justify-center pl-40 gap-5"
+          className="h-screen w-full md:w-3/5 2xl:w-2/5 flex flex-col justify-center px-5 md:px-10 xl:px-40 gap-5"
         >
-          <h1 className="text-4xl font-bold">{tvShow.title}</h1>
-          <p className="">{tvShow.plot}</p>
+          <h1 className="text-3xl sm:text-4xl font-bold">{tvShow.title}</h1>
+          <p className="line-clamp-6">{tvShow.plot}</p>
           <p className="text-subtitle">
             {tvShow.releaseYear} | {secondsToRuntime(tvShow.runtime)} |{' '}
             {tvShow.genres.map((genre) => genre.text).join(', ')}
@@ -96,54 +101,46 @@ export default function TVShowDetailPage() {
             {tvShow.stars.split(' in')[0]}
           </p>
           <div className="flex items-center gap-5">
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#fde68a' }}
-              className="w-fit px-10 py-3 bg-black dark:bg-white border-neutral-600 border rounded-full text-white dark:text-black font-semibold"
+            <CustomFilledButton
+              btnText="Play"
               onClick={() => {}}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <FontAwesomeIcon icon={faPlay} className="w-5 h-5 text-black" />
-                Play
-              </div>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="w-fit px-10 py-3 bg-neutral-500 border-neutral-600 border rounded-full text-white font-semibold"
+              icon={faPlay}
+            />
+            <CustomSecondaryButton
+              btnText="Watch Later"
               onClick={() => {
                 handleAddWatchlist();
               }}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <FontAwesomeIcon icon={faAdd} className="w-5 h-5 text-white" />
-                Watch Later
-              </div>
-            </motion.button>
+              icon={faAdd}
+            />
           </div>
         </header>
-        <main className="flex flex-col gap-10">
+        <main className="flex flex-col gap-5 md:gap-10">
           {Array.from(
             { length: tvShow.episodes.seasons.length - 1 },
             (_, index) => (
               <section
                 data-aos="fade-up"
                 key={index + 1}
-                className="flex flex-col gap-5 px-40"
+                className="flex flex-col gap-5 px-5 lg:px-40"
               >
-                <h2 className="text-3xl font-semibold">Season {index + 1}</h2>
+                <h2 className="text-2xl md:text-3xl font-semibold">
+                  Season {index + 1}
+                </h2>
                 <ul className="flex flex-col">
                   {Array.from(
                     { length: tvShow.episodes.episodes.total - 1 },
                     (_, subindex) => (
                       <li
                         key={subindex + 1}
-                        className="flex items-center gap-4 p-5 border-b border-default-border"
+                        className="flex items-center max-sm:flex-col max-sm:items-start gap-4 p-5 border-b border-default-border"
                       >
                         <div className="w-32 h-20 rounded-lg bg-subtitle"></div>
                         <div className="flex flex-col">
                           <p className="font-medium text-lg">
                             Episode {subindex + 1}
                           </p>
-                          <p className="text-subtitle overflow-ellipsis">
+                          <p className="text-subtitle overflow-ellipsis max-sm:text-sm line-clamp-3">
                             Lorem ipsum dolor sit amet consectetur adipisicing
                             elit. Maiores exercitationem harum ut veritatis quae
                             debitis excepturi possimus praesentium quod ipsa.
@@ -156,17 +153,16 @@ export default function TVShowDetailPage() {
               </section>
             )
           )}
-          <section
+          <main
             data-aos="fade-up"
-            className="w-full flex flex-col gap-7 px-40"
+            className="w-full flex flex-col gap-7 sm:px-5 lg:px-40"
           >
-            <h2 className="text-3xl font-semibold">More like this</h2>
-            <ul className="w-full flex gap-5">
-              {recommendations.map((rec, index) => (
-                <MovieCard key={index} movie={rec} />
-              ))}
-            </ul>
-          </section>
+            <MovieList
+              title="More like this"
+              movies={recommendations}
+              error={error}
+            />
+          </main>
         </main>
       </div>
       <Footer />

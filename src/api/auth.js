@@ -26,8 +26,12 @@ export async function signUp(user) {
 
 export async function signOut() {
   try {
-    const token = localStorage.removeItem('refresh_token');
-    const response = await axiosInstance.post(`/users/signout/`, token);
+    const token = localStorage.getItem('refresh_token');
+    console.log(token);
+    const response = await axiosInstance.post(`/users/signout/`, {
+      refresh: token,
+    });
+    console.log(response);
     if (response) {
       localStorage.removeItem('user');
       localStorage.removeItem('access_token');

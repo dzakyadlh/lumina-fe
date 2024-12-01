@@ -12,6 +12,12 @@ import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { MovieCard } from '../../components/movie_card';
 import { addWatchlist } from '../../api/users';
 import { secondsToRuntime } from '../../utils/runtimeConverter';
+import { ErrorAlert } from '../../components/alerts';
+import {
+  CustomFilledButton,
+  CustomSecondaryButton,
+} from '../../components/custom_buttons';
+import { MovieList } from '../../components/movie_list';
 
 export default function MovieDetailPage() {
   const { movie_id } = useParams();
@@ -83,10 +89,10 @@ export default function MovieDetailPage() {
         )}
         <header
           data-aos="fade-right"
-          className="h-screen w-2/5 flex flex-col justify-center pl-40 gap-5"
+          className="h-screen w-full md:w-3/5 2xl:w-2/5 flex flex-col justify-center px-5 md:px-10 xl:px-40 gap-5"
         >
           <h1 className="text-4xl font-bold">{movie.title}</h1>
-          <p className="">{movie.plot}</p>
+          <p className="line-clamp-6">{movie.plot}</p>
           <p className="text-subtitle">
             {movie.releaseYear} | {secondsToRuntime(movie.runtime)} |{' '}
             {movie.genres.map((genre) => genre.text).join(', ')}
@@ -96,42 +102,32 @@ export default function MovieDetailPage() {
             {movie.stars.split(' in')[0]}
           </p>
           <div className="flex items-center gap-5">
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#fde68a' }}
-              className="w-fit px-10 py-3 bg-black dark:bg-white border-neutral-600 border rounded-full text-white dark:text-black font-semibold"
+            <CustomFilledButton
+              btnText="Play"
               onClick={() => {}}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <FontAwesomeIcon icon={faPlay} className="w-5 h-5 text-black" />
-                Play
-              </div>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="w-fit px-10 py-3 bg-neutral-500 border-neutral-600 border rounded-full text-white font-semibold"
+              icon={faPlay}
+            />
+            <CustomSecondaryButton
+              btnText="Watch Later"
               onClick={() => {
                 handleAddWatchlist();
               }}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <FontAwesomeIcon icon={faAdd} className="w-5 h-5 text-white" />
-                Watch Later
-              </div>
-            </motion.button>
+              icon={faAdd}
+            />
           </div>
         </header>
-        <section
+        <main
           data-aos="fade-up"
-          className="w-full flex flex-col gap-7 px-40"
+          className="w-full flex flex-col gap-7 sm:px-5 lg:px-40"
         >
-          <h2 className="text-3xl font-semibold">More like this</h2>
-          <ul className="w-full flex gap-5">
-            {recommendations.map((rec, index) => (
-              <MovieCard key={index} movie={rec} />
-            ))}
-          </ul>
-        </section>
+          <MovieList
+            title="More like this"
+            movies={recommendations}
+            error={error}
+          />
+        </main>
       </div>
+      {error && <ErrorAlert alertText={error} />}
       <Footer />
     </React.Fragment>
   );

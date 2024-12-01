@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-black border-t border-neutral-700 mt-10 pb-5">
+    <footer className="bg-white dark:bg-black border-t border-neutral-700 mt-10 pb-5 px-5">
       <div className="mx-auto w-full max-w-screen-xl py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">

@@ -5,11 +5,12 @@ export function MovieCard({ movie }) {
   return (
     <motion.button
       whileHover={{ scale: 1.1 }}
-      className="w-[25vw] md:w-[12.5%] rounded-lg"
+      className="max-lg:flex-shrink-0 w-[25vw] sm:w-[15vw] lg:w-[12.5%] rounded-lg border border-neutral-700"
     >
       {movie.is_series === false ? (
         <Link to={`/movies/${movie.movie_id}`}>
           <img
+            draggable="false"
             className="h-full rounded-lg object-cover"
             alt={`${movie.title} (${movie.releaseYear})`}
             src={movie.imageUrl}
@@ -18,6 +19,7 @@ export function MovieCard({ movie }) {
       ) : (
         <Link to={`/tvShows/${movie.movie_id}`}>
           <img
+            draggable="false"
             className="h-full rounded-lg object-cover"
             alt={`${movie.title} (${movie.releaseYear})`}
             src={movie.imageUrl}
@@ -36,10 +38,10 @@ export function FeatureCard({ titleText, bodyText = '' }) {
         backgroundColor: 'transparent',
         transition: { duration: 2 },
       }}
-      className="w-1/4 rounded-lg bg-neutral-800 border-neutral-600 border p-5"
+      className="w-2/5 md:w-1/4 rounded-lg bg-neutral-800 border-neutral-600 border p-5"
       href="#"
     >
-      <h3 className="font-semibold text-lg">{titleText}</h3>
+      <h3 className="font-semibold md:text-lg">{titleText}</h3>
       <p className="text-sm">{bodyText}</p>
     </motion.div>
   );

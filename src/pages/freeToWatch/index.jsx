@@ -4,6 +4,7 @@ import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 import { MovieCard } from '../../components/movie_card';
 import { CircularProgress } from '@mui/material';
+import { ErrorAlert } from '../../components/alerts';
 
 export default function FreeToWatchPage() {
   const [data, setData] = useState([]);
@@ -45,18 +46,21 @@ export default function FreeToWatchPage() {
   return (
     <React.Fragment>
       <Navbar />
-      <div className="min-h-screen w-full flex flex-col px-20 py-28 gap-10">
+      <div className="min-h-screen w-full flex flex-col px-5 md:px-10 xl:px-20 pt-24 pb-5 md:py-28 gap-10">
         <header>
-          <h1 className="font-bold text-4xl">This week's free to watch list</h1>
+          <h1 className="font-bold text-3xl md:text-4xl">
+            This week's free to watch
+          </h1>
         </header>
         <main>
-          <section className="w-full flex flex-wrap gap-5">
-            {data.map((item, index) => (
-              <MovieCard key={index} movie={item} />
+          <section className="w-full flex flex-wrap justify-center gap-5">
+            {data.map((item) => (
+              <MovieCard key={item.movie_id} movie={item} />
             ))}
           </section>
         </main>
       </div>
+      {error && <ErrorAlert alertText={error} />}
       <Footer />
     </React.Fragment>
   );
