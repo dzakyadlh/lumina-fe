@@ -18,6 +18,7 @@ import TVShowDetailPage from './pages/tvShows/detail';
 import WatchlistPage from './pages/watchlist';
 import FreeToWatchPage from './pages/freeToWatch';
 import SearchPage from './pages/search';
+import TestPage from './pages/test/test';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('access_token');
@@ -127,6 +128,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SearchPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="test"
+          element={
+            <ProtectedRoute>
+              <TestPage />
             </ProtectedRoute>
           }
         />

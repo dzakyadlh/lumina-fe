@@ -6,10 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { CircularProgress } from '@mui/material';
 import { getDetailsById, getTvShowsByGenre } from '../../api/movies';
-import { motion } from 'motion/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { MovieCard } from '../../components/movie_card';
 import { addWatchlist } from '../../api/users';
 import { secondsToRuntime } from '../../utils/runtimeConverter';
 import { MovieList } from '../../components/movie_list';
@@ -30,6 +27,7 @@ export default function TVShowDetailPage() {
     const fetchTvShowData = async () => {
       try {
         const data = await getDetailsById(tvShow_id);
+        console.log(data);
         setTvShow(data);
         const reData = await getTvShowsByGenre(data.genres[0].text);
         setRecommendations(reData);
@@ -69,7 +67,7 @@ export default function TVShowDetailPage() {
     );
 
   return (
-    <React.Fragment>
+    <React.Fragment key={tvShow_id}>
       <Navbar />
       <div className="min-h-screen w-full flex flex-col gap-10">
         <img
@@ -116,46 +114,47 @@ export default function TVShowDetailPage() {
           </div>
         </header>
         <main className="flex flex-col gap-5 md:gap-10">
-          {Array.from(
-            { length: tvShow.episodes.seasons.length - 1 },
-            (_, index) => (
-              <section
-                data-aos="fade-up"
-                key={index + 1}
-                className="flex flex-col gap-5 px-5 lg:px-40"
-              >
-                <h2 className="text-2xl md:text-3xl font-semibold">
-                  Season {index + 1}
-                </h2>
-                <ul className="flex flex-col">
-                  {Array.from(
-                    { length: tvShow.episodes.episodes.total - 1 },
-                    (_, subindex) => (
-                      <li
-                        key={subindex + 1}
-                        className="flex items-center max-sm:flex-col max-sm:items-start gap-4 p-5 border-b border-default-border"
-                      >
-                        <div className="w-32 h-20 rounded-lg bg-subtitle"></div>
-                        <div className="flex flex-col">
-                          <p className="font-medium text-lg">
-                            Episode {subindex + 1}
-                          </p>
-                          <p className="text-subtitle overflow-ellipsis max-sm:text-sm line-clamp-3">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Maiores exercitationem harum ut veritatis quae
-                            debitis excepturi possimus praesentium quod ipsa.
-                          </p>
-                        </div>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </section>
-            )
-          )}
+          {tvShow.episodes.seasons.map((season, index) => (
+            <section
+              data-aos="fade-up"
+              key={index + 1}
+              className="flex flex-col gap-5 px-5 lg:px-40"
+            >
+              <h2 className="text-2xl md:text-3xl font-semibold">
+                Season {index + 1}
+              </h2>
+              <ul className="flex flex-col">
+                {Array.from(
+                  {
+                    length:
+                      tvShow.episodes.episodes.total /
+                      tvShow.episodes.seasons.length,
+                  },
+                  (_, subindex) => (
+                    <li
+                      key={subindex + 1}
+                      className="flex items-center max-sm:flex-col max-sm:items-start gap-4 p-5 border-b border-default-border"
+                    >
+                      <div className="w-32 h-20 rounded-lg bg-subtitle"></div>
+                      <div className="flex flex-col">
+                        <p className="font-medium text-lg">
+                          Episode {subindex + 1}
+                        </p>
+                        <p className="text-subtitle overflow-ellipsis max-sm:text-sm line-clamp-3">
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Maiores exercitationem harum ut veritatis quae
+                          debitis excepturi possimus praesentium quod ipsa.
+                        </p>
+                      </div>
+                    </li>
+                  )
+                )}
+              </ul>
+            </section>
+          ))}
           <main
             data-aos="fade-up"
-            className="w-full flex flex-col gap-7 sm:px-5 lg:px-40"
+            className="w-full flex flex-col gap-7 sm:px-5 2xl:px-40"
           >
             <MovieList
               title="More like this"

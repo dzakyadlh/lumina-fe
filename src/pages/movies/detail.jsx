@@ -118,7 +118,7 @@ export default function MovieDetailPage() {
         </header>
         <main
           data-aos="fade-up"
-          className="w-full flex flex-col gap-7 sm:px-5 lg:px-40"
+          className="w-full flex flex-col gap-7 sm:px-5 2xl:px-40"
         >
           <MovieList
             title="More like this"

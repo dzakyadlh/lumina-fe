@@ -3,13 +3,11 @@ import { Link } from 'react-router';
 
 export function MovieCard({ movie }) {
   return (
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      className="max-lg:flex-shrink-0 w-[25vw] sm:w-[15vw] lg:w-[12.5%] rounded-lg border border-neutral-700"
-    >
+    <motion.button className="max-lg:flex-shrink-0 w-[25vw] sm:w-[15vw] lg:w-[12.5%] rounded-lg border border-neutral-700 overflow-clip">
       {movie.is_series === false ? (
         <Link to={`/movies/${movie.movie_id}`}>
-          <img
+          <motion.img
+            whileHover={{ scale: 1.1 }}
             draggable="false"
             className="h-full rounded-lg object-cover"
             alt={`${movie.title} (${movie.releaseYear})`}
@@ -18,7 +16,8 @@ export function MovieCard({ movie }) {
         </Link>
       ) : (
         <Link to={`/tvShows/${movie.movie_id}`}>
-          <img
+          <motion.img
+            whileHover={{ scale: 1.1 }}
             draggable="false"
             className="h-full rounded-lg object-cover"
             alt={`${movie.title} (${movie.releaseYear})`}

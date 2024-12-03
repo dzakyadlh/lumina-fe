@@ -1,70 +1,179 @@
-# Getting Started with Create React App
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![logo](public/images/lumina.png)
 
-## Available Scripts
+# Lumina
 
-In the project directory, you can run:
+**Lumina** is a movie streaming website. It provides users access to movies, TV shows, personalized watchlists, and more. Built with **ReactJS** for the frontend, **Django** for the backend, **Redis** for caching, and **PostgreSQL** for the database, Lumina integrates with a public movies API via RapidAPI.
 
-### `npm start`
+## Table of Contents  
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Getting Started](#getting-started)  
+  - [Prerequisites](#prerequisites)  
+  - [Installation](#installation)  
+  - [Running the Application](#running-the-application)  
+- [API Integration](#api-integration)  
+- [Pages](#pages)  
+- [Screenshots](#screenshots)  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **Secure Authentication:** User sign-up, sign-in, and session management.
+- **Personalized Watchlist:** Save movies and TV shows to watch later.
+- **Search Functionality:** Search for movies and TV shows by title.
+- **Free-to-Watch Content:** Access free content easily.
+- **Detail Pages:** View in-depth information for specific movies or TV shows.
+- **Responsive Design:** Optimized for both desktop and mobile.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **ReactJS**
+- **React Router**
+- **CSS (for styling)**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Backend:
 
-### `npm run eject`
+- **Django**
+- **Django REST Framework**
+- **Redis** for caching
+- **PostgreSQL** for data storage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### API:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Public movies API from **RapidAPI**  
+  https://rapidapi.com/SAdrian/api/moviesdatabase
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Getting Started
 
-## Learn More
+### Prerequisites
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Node.js** (v16 or later)
+- **Python** (v3.10 or later)
+- **PostgreSQL**
+- **Redis**
+- **npm** or **yarn**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Installation
 
-### Code Splitting
+1. **Clone the repository**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```bash
+   git clone https://github.com/yourusername/lumina.git
+   cd lumina
+   ```
 
-### Analyzing the Bundle Size
+2. **Frontend Setup**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   ```bash
+   cd frontend
+   npm install
+   ```
 
-### Making a Progressive Web App
+3. **Backend Setup**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   python manage.py migrate
+   ```
 
-### Advanced Configuration
+4. **Environment Variables**  
+   Create `.env` files for both frontend and backend with required variables:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   - **Backend (`backend/.env`)**
+     ```env
+     RAPIDAPI_KEY=your_rapidapi_key
+     ```
 
-### Deployment
+5. **Start Redis Server**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+   ```bash
+   redis-server
+   ```
 
-### `npm run build` fails to minify
+6. **Run Frontend and Backend**
+   - Frontend:
+     ```bash
+     cd frontend
+     npm start
+     ```
+   - Backend:
+     ```bash
+     cd backend
+     python manage.py runserver
+     ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## API Integration
+
+This project uses a public movies API from **RapidAPI** to fetch movie and TV show data. Ensure you have your RapidAPI key set in your `.env` file.
+
+---
+
+## Pages
+
+### Public Pages
+
+- **Landing:** Welcome page for unauthenticated users.
+- **Sign In:** Login page.
+- **Sign Up:** Registration page.
+
+### Protected Pages
+
+- **Home:** Dashboard with personalized content.
+- **TV Shows:** Browse TV shows.
+- **Movies:** Browse movies.
+- **Movie/TV Show Detail:** Specific content details.
+- **Watchlist:** View saved items.
+- **Free to Watch:** Browse free content.
+- **Search:** Search for movies/TV shows by title.
+
+---
+
+## Screenshots
+
+Add screenshots of your application here to showcase its features. For example:
+
+### Landing Page
+
+![Landing Page 1](public/docs/lumina_landing.png)  
+![Landing Page 1](public/docs/lumina_landing2.png)  
+![Landing Page 1](public/docs/lumina_landing3.png)
+
+### Sign In Page
+
+![Sign In Page](public/docs/lumina_signin.png)
+
+### Sign Up Page
+
+![Sign Up Page](public/docs/lumina_signup.png)
+
+### Home Page
+
+![Home Page](public/docs/lumina_home.png)
+
+### TV Shows Page
+
+![TV Shows Page](public/docs/lumina_tvshows.png)
+
+### Free to Watch Page
+
+![Free to Watch Page](public/docs/lumina_freetowatch.png)
+
+### Detail Page
+
+![Detail Page](public/docs/lumina_detail.png)  
+![Detail Page 2](public/docs/lumina_detail2.png)  
+![Detail Page 3](public/docs/lumina_detail3.png)
+
+---
