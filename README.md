@@ -1,6 +1,6 @@
 # Lumina 🎥
 
-**Lumina** is a movie streaming website inspired by Netflix. It provides users access to movies, TV shows, personalized watchlists, and more. Built with **ReactJS** for the frontend, **Django** for the backend, **Redis** for caching, and **PostgreSQL** for the database, Lumina integrates with a public movies API via RapidAPI.
+**Lumina** is a movie streaming website inspired by Netflix. It provides users access to movies, TV shows, personalized watchlists, and more. Built with **ReactJS** for the frontend, **Django** for the backend, **Redis** for caching, and **PostgreSQL** for the database, Lumina integrates with a public movies API via RapidAPI. This branch is a firebase version of the website for deployment to vercel.
 
 ## Table of Contents
 
@@ -37,79 +37,12 @@
 
 ### Backend:
 
-- **Django**
-- **Django REST Framework**
-- **Redis** for caching
-- **PostgreSQL** for data storage
+- **Firebase**
 
 ### API:
 
 - Public movies API from **RapidAPI**  
   https://rapidapi.com/SAdrian/api/moviesdatabase
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- **Node.js** (v16 or later)
-- **Python** (v3.10 or later)
-- **PostgreSQL**
-- **Redis**
-- **npm** or **yarn**
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/yourusername/lumina.git
-   cd lumina
-   ```
-
-2. **Frontend Setup**
-
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-3. **Backend Setup**
-
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   python manage.py migrate
-   ```
-
-4. **Environment Variables**  
-   Create `.env` files for both frontend and backend with required variables:
-
-   - **Backend (`backend/.env`)**
-     ```env
-     RAPIDAPI_KEY=your_rapidapi_key
-     ```
-
-5. **Start Redis Server**
-
-   ```bash
-   redis-server
-   ```
-
-6. **Run Frontend and Backend**
-   - Frontend:
-     ```bash
-     cd frontend
-     npm start
-     ```
-   - Backend:
-     ```bash
-     cd backend
-     python manage.py runserver
-     ```
-
----
 
 ## API Integration
 
