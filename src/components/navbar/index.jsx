@@ -8,7 +8,7 @@ import {
   faTimes,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { signOut } from '../../api/auth';
+import { signOut } from '../../firebase/auth';
 
 export default function Navbar({ page = '' }) {
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ export default function Navbar({ page = '' }) {
       </motion.nav>
     );
   } else {
-    const username = JSON.parse(localStorage.getItem('user')).username;
+    const username = localStorage.getItem('lumina_username');
     return (
       <nav className="fixed z-10 flex items-center px-10 py-5 bg-black w-full">
         <motion.div whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
@@ -238,12 +238,12 @@ export default function Navbar({ page = '' }) {
               initial={{ opacity: 0, x: 110 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 110 }}
-              className="flex items-center gap-5 mb-5"
+              className="w-full flex items-center gap-5 mb-5"
             >
               <input
                 type="text"
                 name="search"
-                className="border border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 w-64 bg-black text-sm"
+                className="w-full border border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 bg-black text-sm"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={handleSearchChange}

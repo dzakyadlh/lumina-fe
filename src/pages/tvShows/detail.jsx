@@ -5,15 +5,15 @@ import Footer from '../../components/footer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { CircularProgress } from '@mui/material';
-import { getDetailsById, getTvShowsByGenre } from '../../api/movies';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { addWatchlist } from '../../api/users';
 import { secondsToRuntime } from '../../utils/runtimeConverter';
 import { MovieList } from '../../components/movie_list';
 import {
   CustomFilledButton,
   CustomSecondaryButton,
 } from '../../components/custom_buttons';
+import fetchMovies from '../../api/movies';
+import { addWatchlist } from '../../firebase/user';
 
 export default function TVShowDetailPage() {
   const { tvShow_id } = useParams();
@@ -26,10 +26,12 @@ export default function TVShowDetailPage() {
   useEffect(() => {
     const fetchTvShowData = async () => {
       try {
-        const data = await getDetailsById(tvShow_id);
-        console.log(data);
+        const data = await fetchMovies({ movie_id: tvShow_id });
         setTvShow(data);
-        const reData = await getTvShowsByGenre(data.genres[0].text);
+        const reData = await fetchMovies({
+          genre: data.genres[0].text,
+          title_type: 'tvSeries',
+        });
         setRecommendations(reData);
       } catch (error) {
         setError(error);
@@ -48,7 +50,11 @@ export default function TVShowDetailPage() {
 
   const handleAddWatchlist = async () => {
     try {
-      const data = await addWatchlist(tvShow_id);
+      const data = await addWatchlist(
+        tvShow.movie_id,
+        tvShow.title,
+        tvShow.imageUrl
+      );
       if (data) {
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
@@ -81,7 +87,7 @@ export default function TVShowDetailPage() {
             id="toast"
             className="fixed bottom-5 right-5 border-yellow-400 border rounded-lg p-4 bg-black"
           >
-            {tvShow.title} added to your watchlist!
+            {tvShow.title} is added to your watchlist!
           </div>
         )}
         <header

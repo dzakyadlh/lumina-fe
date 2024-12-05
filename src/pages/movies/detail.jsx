@@ -5,12 +5,7 @@ import Footer from '../../components/footer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { CircularProgress } from '@mui/material';
-import { getDetailsById, getTvShowsByGenre } from '../../api/movies';
-import { motion } from 'motion/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { MovieCard } from '../../components/movie_card';
-import { addWatchlist } from '../../api/users';
 import { secondsToRuntime } from '../../utils/runtimeConverter';
 import { ErrorAlert } from '../../components/alerts';
 import {
@@ -18,6 +13,8 @@ import {
   CustomSecondaryButton,
 } from '../../components/custom_buttons';
 import { MovieList } from '../../components/movie_list';
+import fetchMovies from '../../api/movies';
+import { addWatchlist } from '../../firebase/user';
 
 export default function MovieDetailPage() {
   const { movie_id } = useParams();
@@ -30,10 +27,9 @@ export default function MovieDetailPage() {
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
-        const data = await getDetailsById(movie_id);
+        const data = await fetchMovies({ movie_id: movie_id });
         setMovie(data);
-        console.log(data);
-        const reData = await getTvShowsByGenre(data.genres[0].text);
+        const reData = await fetchMovies({ genre: data.genres[0].text });
         setRecommendations(reData);
       } catch (error) {
         setError(error);
@@ -52,7 +48,11 @@ export default function MovieDetailPage() {
 
   const handleAddWatchlist = async () => {
     try {
-      const data = await addWatchlist(movie_id);
+      const data = await addWatchlist(
+        movie.movie_id,
+        movie.title,
+        movie.imageUrl
+      );
       if (data) {
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
@@ -84,7 +84,7 @@ export default function MovieDetailPage() {
             id="toast"
             className="fixed bottom-5 right-5 border-yellow-400 border rounded-lg p-4 bg-black"
           >
-            {movie.title} added to your watchlist!
+            {movie.title} is added to your watchlist!
           </div>
         )}
         <header

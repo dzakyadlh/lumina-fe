@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/navbar';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { getMoviesByGenre } from '../../api/movies';
 import { CircularProgress } from '@mui/material';
 import { MovieList } from '../../components/movie_list';
+import fetchMovies from '../../api/movies';
 
 const GENRES = [
   'Action',
@@ -27,7 +25,7 @@ export default function MoviesPage() {
       try {
         const results = await Promise.all(
           GENRES.map((genre) =>
-            getMoviesByGenre(genre)
+            fetchMovies({ genre: genre })
               .then((response) => ({ genre, data: response }))
               .catch((error) => ({ genre, error }))
           )
@@ -53,11 +51,6 @@ export default function MoviesPage() {
         setIsLoading(false);
       }
     };
-
-    AOS.init({
-      duration: 1000,
-      offset: 100,
-    });
 
     fetchAllData();
   }, []);

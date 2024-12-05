@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/navbar';
-import { motion } from 'motion/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPlay } from '@fortawesome/free-solid-svg-icons';
 import './home.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import {
-  getLatestMovies,
-  getPopularMovies,
-  getPopularSeries,
-  getTrendingMovies,
-} from '../../api/movies';
 import { CircularProgress } from '@mui/material';
 import Footer from '../../components/footer';
 import { MovieList } from '../../components/movie_list';
@@ -19,6 +11,8 @@ import {
   CustomFilledButton,
   CustomSecondaryButton,
 } from '../../components/custom_buttons';
+import fetchMovies from '../../api/movies';
+import { addWatchlist } from '../../firebase/user';
 
 export default function HomePage() {
   const [data, setData] = useState({
@@ -40,10 +34,10 @@ export default function HomePage() {
       setIsLoading(true);
       try {
         const [trending, popular, popularSeries, latest] = await Promise.all([
-          getTrendingMovies(),
-          getPopularMovies(),
-          getPopularSeries(),
-          getLatestMovies(),
+          fetchMovies({ param: 'trending' }),
+          fetchMovies({ param: 'popular' }),
+          fetchMovies({ param: 'popularSeries', title_type: 'tvSeries' }),
+          fetchMovies({}),
         ]);
 
         setData({
@@ -106,7 +100,13 @@ export default function HomePage() {
                 />
                 <CustomSecondaryButton
                   btnText="Watch Later"
-                  onClick={() => {}}
+                  onClick={() =>
+                    addWatchlist(
+                      data.trending[0].movie_id,
+                      data.trending[0].title,
+                      data.trending[0].imageUrl
+                    )
+                  }
                   icon={faAdd}
                 />
               </div>
@@ -114,26 +114,34 @@ export default function HomePage() {
           </>
         )}
         <main className="homeMovies">
-          <MovieList
-            title="Popular Movies on Lumina"
-            movies={data.popular}
-            error={errors.popular}
-          />
-          <MovieList
-            title="Popular Series on Lumina"
-            movies={data.popularSeries}
-            error={errors.popularSeries}
-          />
-          <MovieList
-            title="Trending Now"
-            movies={data.trending}
-            error={errors.trending}
-          />
-          <MovieList
-            title="New Releases"
-            movies={data.latest}
-            error={errors.latest}
-          />
+          <div data-aos="fade-right">
+            <MovieList
+              title="Popular Movies on Lumina"
+              movies={data.popular}
+              error={errors.popular}
+            />
+          </div>
+          <div data-aos="fade-right">
+            <MovieList
+              title="Popular Series on Lumina"
+              movies={data.popularSeries}
+              error={errors.popularSeries}
+            />
+          </div>
+          <div data-aos="fade-right">
+            <MovieList
+              title="Trending Now"
+              movies={data.trending}
+              error={errors.trending}
+            />
+          </div>
+          <div data-aos="fade-right">
+            <MovieList
+              title="New Releases"
+              movies={data.latest}
+              error={errors.latest}
+            />
+          </div>
         </main>
       </div>
       <Footer />

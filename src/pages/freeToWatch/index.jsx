@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getRandomMovies, getRandomTvShows } from '../../api/movies';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 import { MovieCard } from '../../components/movie_card';
 import { CircularProgress } from '@mui/material';
 import { ErrorAlert } from '../../components/alerts';
+import fetchMovies from '../../api/movies';
 
 export default function FreeToWatchPage() {
   const [data, setData] = useState([]);
@@ -17,11 +17,19 @@ export default function FreeToWatchPage() {
         const fetchedData = [];
         for (let i = 1; i <= 2; i++) {
           // Fetch random TV shows
-          const responseShows = await getRandomTvShows(i);
+          const responseShows = await fetchMovies({
+            randomized: true,
+            title_type: 'tvSeries',
+            page: i,
+          });
           fetchedData.push(...responseShows);
 
           // Fetch random movies
-          const responseMovies = await getRandomMovies(i);
+          const responseMovies = await fetchMovies({
+            randomized: true,
+            title_type: 'movie',
+            page: i,
+          });
           fetchedData.push(...responseMovies);
         }
         setData(fetchedData);

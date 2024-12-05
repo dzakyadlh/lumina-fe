@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import CustomInputField from '../../components/custom_input_field';
 import { Link, useNavigate } from 'react-router';
-import { signUp } from '../../api/auth';
+import { signInWithGoogle, signUp } from '../../firebase/auth';
+import { ErrorAlert } from '../../components/alerts';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
-    fullName: '',
     username: '',
     email: '',
     password: '',
@@ -22,7 +22,11 @@ export default function SignUpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await signUp(formData);
+      const result = await signUp(
+        formData.username,
+        formData.email,
+        formData.password
+      );
       if (result) {
         navigate('/signin');
       }
@@ -30,8 +34,6 @@ export default function SignUpPage() {
       setError(`${error}`);
     }
   };
-
-  console.log(error);
 
   return (
     <React.Fragment>
@@ -46,14 +48,6 @@ export default function SignUpPage() {
           className="w-full sm:w-2/3 md:w-1/2 xl:w-1/3 2xl:w-1/4 bg-black rounded-lg border border-yellow-400 flex flex-col justify-center px-5 md:px-10 py-10 gap-5"
         >
           <h1 className="text-3xl font-bold">Sign Up</h1>
-          <CustomInputField
-            type="text"
-            labelText="What is your name?"
-            placeholder="Rei Mizuki"
-            inputName="fullName"
-            inputValue={formData.fullName}
-            onChange={handleChange}
-          />
           <CustomInputField
             type="text"
             labelText="What should we call you?"
@@ -89,7 +83,7 @@ export default function SignUpPage() {
           <motion.button
             whileHover={{ scale: 1.05, borderColor: '#fde047' }}
             className="px-10 py-3 bg-transparent border-neutral-600 border rounded-full text-white font-semibold"
-            onClick={() => {}}
+            onClick={signInWithGoogle}
           >
             <div className="flex items-center justify-center gap-2">
               <img
@@ -113,6 +107,7 @@ export default function SignUpPage() {
           </p>
         </form>
       </div>
+      {error && <ErrorAlert alertText={error} />}
     </React.Fragment>
   );
 }

@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { MovieCard } from '../../components/movie_card';
 import { CircularProgress } from '@mui/material';
 import { ErrorAlert } from '../../components/alerts';
-import { searchMoviesByTitle } from '../../api/movies';
+import fetchMovies from '../../api/movies';
 
 export default function SearchPage() {
   const { title } = useParams();
@@ -16,7 +16,7 @@ export default function SearchPage() {
   const searchByTitle = async () => {
     try {
       setIsLoading(true);
-      const response = await searchMoviesByTitle(title);
+      const response = await fetchMovies({ title_search: title });
       setData(response);
     } catch (error) {
       console.log(error);

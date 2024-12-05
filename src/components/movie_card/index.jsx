@@ -57,11 +57,11 @@ export function ReviewCard({ profilePicture, name, reviewText }) {
       className="flex flex-col items-center bg-neutral-800 rounded-lg p-5 border-neutral-600 border"
     >
       <img
-        class="w-24 h-24 mb-3 rounded-full shadow-lg"
+        className="w-24 h-24 mb-3 rounded-full shadow-lg"
         src={profilePicture}
         alt="Profile Picture"
       />
-      <h5 class="mb-2 text-xl font-medium text-white">{name}</h5>
+      <h5 className="mb-2 text-xl font-medium text-white">{name}</h5>
       <p className="text-sm text-gray-300 text-center">{reviewText}</p>
     </motion.div>
   );

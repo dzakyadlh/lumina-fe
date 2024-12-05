@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/navbar';
-import {
-  MovieCard,
-  FeatureCard,
-  ReviewCard,
-} from '../../components/movie_card';
+import { FeatureCard, ReviewCard } from '../../components/movie_card';
 import { motion } from 'motion/react';
 import Footer from '../../components/footer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { CircularProgress } from '@mui/material';
-import {
-  getPopularMovies,
-  getPopularSeries,
-  getRandomTvShows,
-} from '../../api/movies';
 import { CustomFilledButton } from '../../components/custom_buttons';
 import { MovieList } from '../../components/movie_list';
+import fetchMovies from '../../api/movies';
 
 export default function LandingPage() {
   const [data, setData] = useState({
@@ -34,8 +26,8 @@ export default function LandingPage() {
       setIsLoading(true);
       try {
         const [popular, freeToWatch] = await Promise.all([
-          getPopularMovies(),
-          getRandomTvShows(1),
+          fetchMovies({ param: 'popular' }),
+          fetchMovies({ randomized: true, title_type: 'tvSeries', page: 1 }),
         ]);
 
         setData({
@@ -132,25 +124,27 @@ export default function LandingPage() {
         <form className="flex max-sm:flex-col max-sm:items-end justify-center w-full lg:w-2/3 gap-5">
           <input
             type="email"
-            class="w-full md:w-2/3 border  rounded-full block p-4 bg-black border-gray-600 placeholder-gray-400 text-white"
+            className="w-full md:w-2/3 border  rounded-full block p-4 bg-black border-gray-600 placeholder-gray-400 text-white"
             placeholder="Email Address"
             required
           />
           <CustomFilledButton btnText="Watch Now!" onClick={() => {}} />
         </form>
       </section>
-      <MovieList
-        data-aos="fade-up"
-        title="Popular Now"
-        movies={data.popular}
-        error={errors.popular}
-      />
-      <MovieList
-        data-aos="fade-up"
-        title="This Week's Free to Watch"
-        movies={data.freeToWatch}
-        error={errors.freeToWatch}
-      />
+      <div data-aos="fade-up">
+        <MovieList
+          title="Popular Now"
+          movies={data.popular}
+          error={errors.popular}
+        />
+      </div>
+      <div data-aos="fade-up">
+        <MovieList
+          title="This Week's Free to Watch"
+          movies={data.freeToWatch}
+          error={errors.freeToWatch}
+        />
+      </div>
       <section
         data-aos="fade-up"
         className="w-full flex flex-col px-5 md:px-20 py-10 gap-7"

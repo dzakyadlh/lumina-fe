@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/navbar';
-import { getWatchlist, removeWatchlist } from '../../api/users';
 import { CircularProgress } from '@mui/material';
-import { getDetailsById } from '../../api/movies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import Footer from '../../components/footer';
 import { ErrorAlert } from '../../components/alerts';
+import { getWatchlist, removeWatchlist } from '../../firebase/user';
 
 export default function WatchlistPage() {
   const [watchlist, setWatchlist] = useState([]);
@@ -19,21 +18,9 @@ export default function WatchlistPage() {
     const fetchWatchlist = async () => {
       try {
         const data = await getWatchlist();
-        const idList = data.liked_movie_ids;
-        if (Array.isArray(idList) && idList.length > 0) {
-          const movieList = [];
-          for (let i = 0; i < idList.length; i++) {
-            // Fetch movie details by movie ID (using idList[i])
-            const movie = await getDetailsById(idList[i]);
-            movieList.push(movie);
-          }
-
-          // Update the watchlist state with the movie list
-          setWatchlist(movieList);
-        } else {
-          console.log('No liked movies found');
-        }
+        setWatchlist(data);
       } catch (error) {
+        console.error(error);
         setError(error);
       } finally {
         setIsLoading(false);

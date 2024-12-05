@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import CustomInputField from '../../components/custom_input_field';
 import { motion } from 'motion/react';
 import { Link, useNavigate } from 'react-router';
-import { signIn } from '../../api/auth';
+import { signIn, signInWithGoogle } from '../../firebase/auth';
+import { ErrorAlert } from '../../components/alerts';
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -17,7 +18,7 @@ export default function SignInPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await signIn(formData);
+      const result = await signIn(formData.email, formData.password);
       if (result) {
         navigate('/');
       }
@@ -34,58 +35,57 @@ export default function SignInPage() {
           alt="Background Poster"
           className="absolute h-screen z-[-10] filter brightness-50"
         />
-        <form
-          onSubmit={handleSubmit}
-          className="w-full sm:w-2/3 md:w-1/2 xl:w-1/3 2xl:w-1/4 bg-black rounded-lg border border-yellow-400 flex flex-col justify-center px-5 md:px-10 py-10 gap-5"
-        >
-          <h1 className="text-3xl font-bold">Sign In</h1>
-          <CustomInputField
-            type="email"
-            placeholder="Your Email Address"
-            inputName="email"
-            inputValue={formData.email}
-            onChange={handleChange}
-          />
-          <CustomInputField
-            type="password"
-            placeholder="Your Password"
-            inputName="password"
-            inputValue={formData.password}
-            onChange={handleChange}
-          />
-          <div className="flex justify-between mb-2">
-            <div className="flex items-start ml-2">
-              <div className="flex items-center h-5">
-                <input
-                  id="remember"
-                  type="checkbox"
-                  value=""
-                  className="w-4 h-4"
-                />
+        <div className="w-full sm:w-2/3 md:w-1/2 xl:w-1/3 2xl:w-1/4 bg-black rounded-lg border border-yellow-400 flex flex-col justify-center px-5 md:px-10 py-10 gap-5">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <h1 className="text-3xl font-bold">Sign In</h1>
+            <CustomInputField
+              type="email"
+              placeholder="Your Email Address"
+              inputName="email"
+              inputValue={formData.email}
+              onChange={handleChange}
+            />
+            <CustomInputField
+              type="password"
+              placeholder="Your Password"
+              inputName="password"
+              inputValue={formData.password}
+              onChange={handleChange}
+            />
+            <div className="flex justify-between mb-2">
+              <div className="flex items-start ml-2">
+                <div className="flex items-center h-5">
+                  <input
+                    id="remember"
+                    type="checkbox"
+                    value=""
+                    className="w-4 h-4"
+                  />
+                </div>
+                <label
+                  htmlFor="remember"
+                  className="ms-2 text-sm font-medium text-gray-300"
+                >
+                  Remember me
+                </label>
               </div>
-              <label
-                htmlFor="remember"
-                className="ms-2 text-sm font-medium text-gray-300"
-              >
-                Remember me
-              </label>
+              <Link to="#" className="text-end text-sm hover:text-yellow-400">
+                Forgot Password?
+              </Link>
             </div>
-            <Link to="#" className="text-end text-sm hover:text-yellow-400">
-              Forgot Password?
-            </Link>
-          </div>
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.05, backgroundColor: '#fde047' }}
-            className="px-10 py-3 bg-yellow-200 rounded-full text-black font-semibold"
-          >
-            Sign In
-          </motion.button>
-          <p className="text-center text-gray-500">OR</p>
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.05, backgroundColor: '#fde047' }}
+              className="px-10 py-3 bg-yellow-200 rounded-full text-black font-semibold"
+            >
+              Sign In
+            </motion.button>
+            <p className="text-center text-gray-500">OR</p>
+          </form>
           <motion.button
             whileHover={{ scale: 1.05, borderColor: '#fde047' }}
             className="px-10 py-3 bg-transparent border-neutral-600 border rounded-full text-white font-semibold"
-            onClick={() => {}}
+            onClick={signInWithGoogle}
           >
             <div className="flex items-center justify-center gap-2">
               <img
@@ -107,9 +107,9 @@ export default function SignInPage() {
               </Link>
             </span>
           </p>
-          <p className="text-center text-red-800">{error}</p>
-        </form>
+        </div>
       </div>
+      {error && <ErrorAlert alertText={error} />}
     </React.Fragment>
   );
 }
