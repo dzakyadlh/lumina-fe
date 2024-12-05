@@ -5,7 +5,7 @@ export function CustomFilledButton({ btnText, onClick, icon = null }) {
   return (
     <motion.button
       whileHover={{ scale: 1.05, backgroundColor: '#fde047' }}
-      className="w-fit px-4 py-3 sm:px-10 sm:py-3 bg-yellow-200 border-neutral-600 border rounded-full text-white dark:text-black font-semibold"
+      className="w-fit px-4 py-3 sm:px-10 sm:py-3 bg-yellow-200 border-neutral-600 border rounded-full text-black font-semibold"
       onClick={onClick}
     >
       {icon ? (

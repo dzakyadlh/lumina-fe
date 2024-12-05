@@ -65,7 +65,7 @@ export default function SignInPage() {
               </div>
               <label
                 htmlFor="remember"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 text-sm font-medium text-gray-300"
               >
                 Remember me
               </label>
@@ -84,7 +84,7 @@ export default function SignInPage() {
           <p className="text-center text-gray-500">OR</p>
           <motion.button
             whileHover={{ scale: 1.05, borderColor: '#fde047' }}
-            className="px-10 py-3 bg-transparent border-neutral-600 border rounded-full dark:text-white font-semibold"
+            className="px-10 py-3 bg-transparent border-neutral-600 border rounded-full text-white font-semibold"
             onClick={() => {}}
           >
             <div className="flex items-center justify-center gap-2">

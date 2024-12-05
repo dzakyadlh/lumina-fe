@@ -170,7 +170,7 @@ export default function Navbar({ page = '' }) {
               <input
                 type="text"
                 name="search"
-                className="border border-black dark:border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 w-64 bg-black text-sm"
+                className="border border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 w-64 bg-black text-sm"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={handleSearchChange}
@@ -187,7 +187,7 @@ export default function Navbar({ page = '' }) {
           >
             <FontAwesomeIcon
               icon={faSearch}
-              className="text-lg dark:text-white hover:text-yellow-200"
+              className="text-lg text-white hover:text-yellow-200"
             />
           </motion.button>
           <motion.button
@@ -202,10 +202,10 @@ export default function Navbar({ page = '' }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute top-16 right-10 bg-white dark:bg-black flex flex-col gap-5 py-5 border-yellow-200 border rounded-lg"
+              className="absolute top-16 right-10 bg-black flex flex-col gap-5 py-5 border-yellow-200 border rounded-lg"
             >
               <div className="flex items-center gap-4 px-5 pb-5 border-b border-yellow-200 pr-10">
-                <div className="w-10 h-10 rounded-full bg-black dark:bg-white"></div>
+                <div className="w-10 h-10 rounded-full bg-white"></div>
                 <p className="font-bold text-xl">{username}</p>
               </div>
               <div className="px-5 flex flex-col items-start gap-2">
@@ -243,7 +243,7 @@ export default function Navbar({ page = '' }) {
               <input
                 type="text"
                 name="search"
-                className="border border-black dark:border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 w-64 bg-black text-sm"
+                className="border border-white focus:border-yellow-200 outline-none rounded-full px-4 py-2 w-64 bg-black text-sm"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={handleSearchChange}
@@ -251,7 +251,7 @@ export default function Navbar({ page = '' }) {
               <button type="submit" onClick={handleSearchSubmit}>
                 <FontAwesomeIcon
                   icon={faSearch}
-                  className="text-lg dark:text-white hover:text-yellow-200"
+                  className="text-lg text-white hover:text-yellow-200"
                 />
               </button>
             </motion.form>

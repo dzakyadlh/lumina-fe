@@ -79,7 +79,7 @@ export default function TVShowDetailPage() {
         {showToast && (
           <div
             id="toast"
-            className="fixed bottom-5 right-5 border-yellow-400 border rounded-lg p-4 bg-white dark:bg-black"
+            className="fixed bottom-5 right-5 border-yellow-400 border rounded-lg p-4 bg-black"
           >
             {tvShow.title} added to your watchlist!
           </div>

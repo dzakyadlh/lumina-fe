@@ -61,9 +61,7 @@ export function ReviewCard({ profilePicture, name, reviewText }) {
         src={profilePicture}
         alt="Profile Picture"
       />
-      <h5 class="mb-2 text-xl font-medium text-gray-900 dark:text-white">
-        {name}
-      </h5>
+      <h5 class="mb-2 text-xl font-medium text-white">{name}</h5>
       <p className="text-sm text-gray-300 text-center">{reviewText}</p>
     </motion.div>
   );

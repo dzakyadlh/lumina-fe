@@ -132,7 +132,7 @@ export default function LandingPage() {
         <form className="flex max-sm:flex-col max-sm:items-end justify-center w-full lg:w-2/3 gap-5">
           <input
             type="email"
-            class="w-full md:w-2/3 bg-white border border-gray-300 text-gray-900 rounded-full block p-4 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark"
+            class="w-full md:w-2/3 border  rounded-full block p-4 bg-black border-gray-600 placeholder-gray-400 text-white"
             placeholder="Email Address"
             required
           />
@@ -194,42 +194,30 @@ export default function LandingPage() {
         data-aos="fade-up"
         className="w-full flex flex-col px-5 md:px-20 py-10 gap-7"
       >
-        <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
+        <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto  sm:grid-cols-3 xl:grid-cols-6 text-white sm:p-8">
           <div className="flex flex-col items-center justify-center">
             <dt className="mb-2 text-3xl font-extrabold">10M+</dt>
-            <dd className="text-gray-500 dark:text-subtitle text-center">
-              Monthly Active Users
-            </dd>
+            <dd className="text-subtitle text-center">Monthly Active Users</dd>
           </div>
           <div className="flex flex-col items-center justify-center">
             <dt className="mb-2 text-3xl font-extrabold">100K+</dt>
-            <dd className="text-gray-500 dark:text-subtitle text-center">
-              Movies and TV Shows
-            </dd>
+            <dd className="text-subtitle text-center">Movies and TV Shows</dd>
           </div>
           <div className="flex flex-col items-center justify-center">
             <dt className="mb-2 text-3xl font-extrabold">50+</dt>
-            <dd className="text-gray-500 dark:text-subtitle text-center">
-              Countries Supported
-            </dd>
+            <dd className="text-subtitle text-center">Countries Supported</dd>
           </div>
           <div className="flex flex-col items-center justify-center">
             <dt className="mb-2 text-3xl font-extrabold">10+</dt>
-            <dd className="text-gray-500 dark:text-subtitle text-center">
-              Subtitles Supported
-            </dd>
+            <dd className="text-subtitle text-center">Subtitles Supported</dd>
           </div>
           <div className="flex flex-col items-center justify-center">
             <dt className="mb-2 text-3xl font-extrabold">4.8+</dt>
-            <dd className="text-gray-500 dark:text-subtitle text-center">
-              Average Rating
-            </dd>
+            <dd className="text-subtitle text-center">Average Rating</dd>
           </div>
           <div className="flex flex-col items-center justify-center">
             <dt className="mb-2 text-3xl font-extrabold">24/7</dt>
-            <dd className="text-gray-500 dark:text-subtitle text-center">
-              Customer Support
-            </dd>
+            <dd className="text-subtitle text-center">Customer Support</dd>
           </div>
         </dl>
       </section>
